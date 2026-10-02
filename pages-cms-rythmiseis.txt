@@ -6,6 +6,25 @@ media:
   output: uploads
 
 content:
+  - name: thoughts
+    label: Η σκέψη του μήνα
+    type: file
+    path: data/thoughts.json
+    format: json
+    list: true
+    fields:
+      - { name: featured, label: "Σκέψη του μήνα (εμφανίζεται στην αρχική)", type: boolean }
+      - { name: month, label: "Μήνας (π.χ. Νοέμβριος 2026)", type: string }
+      - { name: title, label: Τίτλος άρθρου, type: string, required: true }
+      - { name: author, label: Συγγραφέας, type: string }
+      - { name: author_role, label: Ιδιότητα συγγραφέα, type: string }
+      - { name: outlet, label: "Μέσο (π.χ. Ναυτεμπορική · The N Society)", type: string }
+      - { name: date, label: Ημερομηνία δημοσίευσης, type: date }
+      - { name: quote, label: "Φράση-απόσπασμα (σύντομη)", type: text }
+      - { name: summary, label: Σύντομη περίληψη, type: text }
+      - { name: link, label: Σύνδεσμος άρθρου, type: string }
+      - { name: image, label: Φωτογραφία συγγραφέα, type: image }
+
   - name: news
     label: Νέα
     type: file
@@ -117,6 +136,17 @@ content:
       - { name: description, label: Περιγραφή, type: text }
       - { name: link, label: Σύνδεσμος, type: string }
       - { name: link_label, label: "Κείμενο κουμπιού (π.χ. Συμμετέχετε στην έρευνα)", type: string }
+      - { name: featured, label: "Προβολή στην αρχική (μεγάλη ενότητα, μόνο ένα έργο)", type: boolean }
+      - { name: kicker, label: "Είδος έργου (π.χ. Ψηφιακό αρχείο)", type: string }
+      - { name: image, label: Εικόνα για την προβολή, type: image }
+      - { name: sponsor, label: "Υποστήριξη (π.χ. powered by Ναυτεμπορική)", type: string }
+      - name: stats
+        label: Αριθμοί για την προβολή
+        type: object
+        list: true
+        fields:
+          - { name: value, label: "Αριθμός (π.χ. 50)", type: string }
+          - { name: label, label: "Ετικέτα (π.χ. Επιχειρηματίες)", type: string }
 
   - name: home
     label: "Κείμενα: Αρχική"
@@ -125,6 +155,7 @@ content:
     format: json
     fields:
       - { name: tagline, label: Φράση κάτω από τον τίτλο, type: text }
+      - { name: image, label: Φωτογραφία ενότητας «Το Εργαστήριο», type: image }
       - { name: pull, label: Εναρκτήρια φράση «Το Εργαστήριο», type: text }
       - { name: intro, label: Κείμενο, type: text }
       - { name: focus_title, label: Τίτλος ετικετών, type: string }
@@ -191,7 +222,11 @@ content:
       - { name: department, label: Τμήμα, type: string }
       - { name: department_url, label: Ιστοσελίδα Τμήματος, type: string }
       - { name: university, label: Πανεπιστήμιο, type: string }
-      - { name: hero_images, label: Φωτογραφίες αρχικής (εναλλάσσονται), type: image, list: true }
+      - { name: hero_images, label: "Φωτογραφίες αρχικής (1η οριζόντια, 2η κάθετη)", type: image, list: true }
+      - { name: announcement_on, label: Εμφάνιση μπάρας ανακοίνωσης, type: boolean }
+      - { name: announcement_text, label: Κείμενο μπάρας, type: string }
+      - { name: announcement_note, label: "Δεύτερο κείμενο μπάρας (π.χ. powered by Ναυτεμπορική)", type: string }
+      - { name: announcement_link, label: Σύνδεσμος μπάρας, type: string }
       - { name: address, label: Διεύθυνση, type: text }
       - { name: office, label: Γραφείο / όροφος, type: string }
       - { name: email, label: Email Εργαστηρίου, type: string }

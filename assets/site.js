@@ -20,6 +20,18 @@ const MONTHS = ["Ιανουάριος","Φεβρουάριος","Μάρτιος"
 const MONTHS_GEN = ["Ιανουαρίου","Φεβρουαρίου","Μαρτίου","Απριλίου","Μαΐου","Ιουνίου","Ιουλίου","Αυγούστου","Σεπτεμβρίου","Οκτωβρίου","Νοεμβρίου","Δεκεμβρίου"];
 const PALETTE = ["#1F4E8C","#8C3B5E","#5E7A2E","#1F6F8B","#A8741A","#5B4FB3"];
 const LOGO = "images/uoa-logo.png";
+const LOGO_WHITE = "images/uoa-logo-white.png";
+const ICONS = {
+  mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+  phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+  pin: '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  cal: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  ext: '<path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/>',
+  doc: '<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+};
+const icon = (n) => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ""}</svg>`;
 
 /* ---------- Βοηθητικά ---------- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -100,7 +112,12 @@ function renderChrome(site) {
   const deptUrl = safeUrl(s.department_url) || "https://www.soc.uoa.gr/";
   const head = $("#site-header");
   if (head) {
-    head.outerHTML = `
+    const ann = s.announcement_on && s.announcement_text ? `
+    <a class="announce" href="${esc(safeUrl(s.announcement_link) || "#")}"${/^https?:/.test(s.announcement_link || "") ? ' target="_blank" rel="noopener"' : ""}><div class="wrap">
+      <span class="new-tag">ΝΕΟ</span><b>${esc(s.announcement_text)}</b>
+      ${s.announcement_note ? `<span class="sep">·</span><span class="by">${esc(s.announcement_note)}</span>` : ""}
+      <span class="go"><span class="go-t">Εξερευνήστε</span> ${icon("arrow")}</span></div></a>` : "";
+    head.outerHTML = ann + `
     <div class="topbar"><div class="wrap">
       <a class="uoa-logo" href="https://www.uoa.gr/"><img src="${LOGO}" alt="Εθνικό και Καποδιστριακό Πανεπιστήμιο Αθηνών" onerror="this.classList.add('missing');this.nextElementSibling.hidden=false"><span hidden>Εθνικό και Καποδιστριακό Πανεπιστήμιο Αθηνών</span></a>
       <a href="${esc(deptUrl)}">Τμήμα Κοινωνιολογίας ↗</a>
@@ -122,8 +139,8 @@ function renderChrome(site) {
     foot.outerHTML = `
     <footer class="site-footer">
       <div class="wrap">
-        <div><b>${esc(title)}</b>${s.title_en ? `<em>${esc(s.title_en)}</em><br>` : ""}${esc(s.department || "Τμήμα Κοινωνιολογίας")}<br>${esc(s.university || "Εθνικό και Καποδιστριακό Πανεπιστήμιο Αθηνών")}</div>
-        <div><b>Επικοινωνία</b>${s.address ? esc(s.address) + "<br>" : ""}${s.email ? `<a href="mailto:${esc(s.email)}">${esc(s.email)}</a><br>` : ""}${s.phone ? esc(s.phone) + "<br>" : ""}<a href="contact.html">Φόρμα επικοινωνίας</a></div>
+        <div><span class="foot-logo"><img src="${LOGO}" alt="Εθνικό και Καποδιστριακό Πανεπιστήμιο Αθηνών" onerror="this.parentNode.remove()"></span><b>${esc(title)}</b>${s.title_en ? `<em>${esc(s.title_en)}</em><br>` : ""}${esc(s.department || "Τμήμα Κοινωνιολογίας")}<br>${esc(s.university || "Εθνικό και Καποδιστριακό Πανεπιστήμιο Αθηνών")}</div>
+        <div><b>Επικοινωνία</b>${s.address ? icon("pin") + " " + esc(s.address) + "<br>" : ""}${s.email ? `${icon("mail")} <a href="mailto:${esc(s.email)}">${esc(s.email)}</a><br>` : ""}${s.phone ? icon("phone") + " " + esc(s.phone) + "<br>" : ""}<a href="contact.html">Φόρμα επικοινωνίας →</a></div>
         <div><b>Σύνδεσμοι</b><ul>
           <li><a href="${esc(deptUrl)}">Τμήμα Κοινωνιολογίας</a></li>
           <li><a href="https://www.uoa.gr/">ΕΚΠΑ</a></li>
@@ -163,8 +180,8 @@ function uoaFeed(feed, n) {
 /* ---------- Εκδηλώσεις & ημερολόγιο ---------- */
 function eventItem(e) {
   const when = fmtDate(e.date) + (e.time ? `, ${esc(e.time)}` : "");
-  return `<li><div class="when">${when}</div><h4>${esc(e.title)}</h4>
-    ${e.location ? `<p>${esc(e.location)}</p>` : ""}
+  return `<li><div class="when">${icon("cal")} ${when}</div><h4>${esc(e.title)}</h4>
+    ${e.location ? `<p class="where">${icon("pin")} ${esc(e.location)}</p>` : ""}
     ${e.description ? `<p>${esc(e.description)}</p>` : ""}
     ${safeUrl(e.link) ? `<p><a class="more" href="${esc(safeUrl(e.link))}" target="_blank" rel="noopener">Περισσότερα</a></p>` : ""}</li>`;
 }
@@ -213,9 +230,9 @@ function personCard(p) {
     <h3>${esc(p.name)}</h3>
     ${p.role ? `<p class="role">${esc(p.role)}</p>` : ""}
     ${p.topic ? `<p class="topic"><span>Θέμα διατριβής</span>${esc(p.topic)}</p>` : ""}
-    ${p.email ? `<p class="contact-line"><a href="mailto:${esc(p.email)}">${esc(p.email)}</a></p>` : ""}
-    ${p.phone ? `<p class="contact-line">${esc(p.phone)}</p>` : ""}
-    ${cv ? `<a class="cv" href="${esc(cv)}" target="_blank" rel="noopener">Βιογραφικό</a>` : ""}
+    ${p.email ? `<p class="contact-line">${icon("mail")}<a href="mailto:${esc(p.email)}">${esc(p.email)}</a></p>` : ""}
+    ${p.phone ? `<p class="contact-line">${icon("phone")}${esc(p.phone)}</p>` : ""}
+    ${cv ? `<a class="cv" href="${esc(cv)}" target="_blank" rel="noopener">${icon("doc")} Βιογραφικό</a>` : ""}
   </article>`;
 }
 
@@ -281,15 +298,35 @@ function featuredChart(charts) {
   return ch.find(c => c.featured) || ch[0];
 }
 
+/* ---------- Σκέψη του μήνα ---------- */
+function thoughtCard(t, big) {
+  const link = safeUrl(t.link);
+  return `<article class="thought${big ? " big" : ""}">
+    <div class="thought-side">
+      <div class="thought-photo" style="${bg(t.image)}"></div>
+      <p class="thought-author"><b>${esc(t.author)}</b>${esc(t.author_role || "")}</p>
+    </div>
+    <div class="thought-main">
+      <div class="thought-kick"><span class="kicker">Η σκέψη του μήνα</span>${t.month ? `<span class="month">${esc(t.month)}</span>` : ""}</div>
+      <h2>${esc(t.title)}</h2>
+      <p class="thought-meta">${esc(t.outlet || "")}${t.date ? ` · ${fmtDate(t.date)}` : ""}</p>
+      ${t.quote ? `<blockquote class="thought-quote">${inline(t.quote)}</blockquote>` : ""}
+      ${paras(t.summary)}
+      ${link ? `<p><a class="btn" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none" href="${esc(link)}" target="_blank" rel="noopener">Διαβάστε ολόκληρο το άρθρο ${icon("ext")}</a></p>` : ""}
+    </div>
+  </article>`;
+}
+
 /* ---------- Σελίδες ---------- */
 const PAGES = {
   async home(site) {
-    const [home, axes, news, events, charts, feed] = await Promise.all([load("home"), load("axes"), load("news"), load("events"), load("charts"), load("uoa-news")]);
+    const [home, axes, news, events, charts, feed, projects, thoughts] = await Promise.all([load("home"), load("axes"), load("news"), load("events"), load("charts"), load("uoa-news"), load("projects"), load("thoughts")]);
     const s = site || {};
     if (home) {
       $("#h-tagline").innerHTML = inline(home.tagline);
       $("#h-pull").innerHTML = inline(home.pull);
       $("#h-intro").innerHTML = paras(home.intro);
+      if (safeUrl(home.image)) $("#h-photo").style.cssText = bg(home.image); else $("#h-photo").hidden = true;
       $("#h-focus-title").textContent = home.focus_title || "Πεδία έμφασης";
       $("#h-focus").innerHTML = list(home.focus).map(f => `<li>${esc(f)}</li>`).join("");
       $("#h-outro").innerHTML = paras(home.outro);
@@ -297,24 +334,55 @@ const PAGES = {
     }
     if (s.title) $("#h-title").textContent = s.title;
     if (s.title_en) $("#h-title-en").textContent = s.title_en;
-    // εναλλαγή φωτογραφιών
-    const imgs = list(s.hero_images).map(safeUrl).filter(Boolean);
-    const box = $("#slides");
-    if (imgs.length) {
-      box.innerHTML = imgs.map((u, i) => `<div class="${i ? "" : "on"}" style="background-image:url('${esc(u)}')"></div>`).join("");
-      if (imgs.length > 1 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        let k = 0; const els = box.children;
-        setInterval(() => { els[k].classList.remove("on"); k = (k + 1) % els.length; els[k].classList.add("on"); }, 6000);
-      }
+    // φωτογραφίες: η πρώτη οριζόντια (πλατιά), η δεύτερη κάθετη (στενή)
+    const imgs = list(s.hero_images).map(safeUrl).filter(Boolean).slice(0, 2);
+    const box = $("#hero-photos");
+    if (imgs.length) { box.innerHTML = imgs.map(u => `<div class="photo" style="${bg(u)}"></div>`).join(""); if (imgs.length === 1) box.classList.add("one"); }
+    else box.hidden = true;
+    // ημερομηνία στην «απόδειξη»
+    const t = new Date();
+    $("#receipt-date").textContent = `${String(t.getDate()).padStart(2, "0")}/${String(t.getMonth() + 1).padStart(2, "0")}/${t.getFullYear()}`;
+    // έργο σε προβολή
+    const sp = list(projects).find(p => p.featured);
+    if (sp) {
+      const years = (sp.title.match(/\d{4}\s*[–-]\s*\d{4}/) || [""])[0];
+      const first = String(sp.description || "").split(/\n\s*\n/)[0];
+      // η αφίσα φαίνεται πάντα από κάτω· αν υπάρχει φωτογραφία, μπαίνει από πάνω
+      const host = (String(sp.link || "").match(/^https?:\/\/([^\/]+)/) || ["", ""])[1];
+      $("#spot-media").outerHTML = `<div class="browser">
+        <div class="browser-bar"><i></i><i></i><i></i>${host ? `<span>${esc(host)}</span>` : ""}</div>
+        <div class="spot-media">
+          <div class="spot-poster"><span>${esc(sp.kicker || "Ψηφιακό αρχείο")}</span><b>${esc(years || sp.title)}</b></div>
+          ${safeUrl(sp.image) ? `<img src="${esc(safeUrl(sp.image))}" alt="${esc(sp.title)}" onerror="this.remove()">` : ""}
+        </div></div>`;
+      $("#spot-txt").innerHTML = `
+        <div class="kick">${/εξέλιξη/i.test(sp.status || "") ? '<span class="live"></span>' : ""}${esc(sp.status || "")}${sp.kicker ? ` · ${esc(sp.kicker)}` : ""}</div>
+        <h2>${esc(sp.title)}</h2>${paras(first)}
+        ${list(sp.stats).length ? `<dl class="spot-stats">${list(sp.stats).map(x => `<div><dt>${esc(x.label)}</dt><dd>${esc(x.value)}</dd></div>`).join("")}</dl>` : ""}
+        <div class="spot-actions">${safeUrl(sp.link) ? `<a class="btn-light" href="${esc(safeUrl(sp.link))}" target="_blank" rel="noopener">${esc(sp.link_label || "Περισσότερα")} ${icon("arrow")}</a>` : ""}
+        ${sp.sponsor ? `<span class="powered">${esc(sp.sponsor).replace(/(powered by)\s+(.+)/i, '$1 <b>$2</b>')}</span>` : ""}</div>`;
+      $("#spotlight").hidden = false;
     }
     // απόδειξη
     if (axes) $("#receipt-list").innerHTML = axes.map(a => `<li><a href="axis.html?id=${encodeURIComponent(a.id)}"><span class="sw" style="background:${esc(a.color)}"></span><span class="name">${esc(a.title)}</span><span class="dots"></span><span>1</span></a></li>`).join("");
-    // γράφημα του μήνα
+    // σκέψη του μήνα (πρώτη) και γράφημα του μήνα (δεύτερο)
+    const th = list(thoughts).find(t => t.featured) || list(thoughts)[0];
     const fc = featuredChart(charts);
+    if (th) $("#thought").innerHTML = thoughtCard(th, true);
+    else $("#thought").hidden = true;
     if (fc) {
-      $("#featured").innerHTML = `<div><span class="kicker">Γράφημα του μήνα</span>${chartText(fc)}<p><a class="more" href="research.html#charts-block">Όλα τα γραφήματα</a></p></div>${chartBox(fc, "chart-featured", true)}`;
+      $("#featured").innerHTML = `
+        <div class="companion-head"><span class="kicker kicker-soft">${th ? "Τα δεδομένα πίσω από τη σκέψη" : "Γράφημα του μήνα"}</span>${fc.month ? `<span class="month">${esc(fc.month)}</span>` : ""}</div>
+        <div class="companion">
+          ${chartBox(fc, "chart-featured", true)}
+          <div class="analysis"><h3>${esc(fc.headline || fc.title)}</h3>
+            ${fc.headline ? `<p class="muted" style="font-size:.95rem">${esc(fc.title)}</p>` : ""}
+            ${fc.description ? `<details><summary>Διαβάστε την ανάλυση των δεδομένων</summary>${paras(fc.description)}</details>` : ""}
+            <p><a class="more" href="research.html#charts-block">Όλα τα γραφήματα</a></p></div>
+        </div>`;
       drawChart($("#chart-featured"), fc);
-    } else $("#featured-block").hidden = true;
+    } else $("#featured").hidden = true;
+    if (!th && !fc) $("#featured-block").hidden = true;
     // νέα
     const n = sortNews(news).slice(0, 3);
     $("#home-news").innerHTML = n.length ? `<div class="news-grid">${n.map(x => newsCard(x, false)).join("")}</div>` : `<p class="empty">Σύντομα θα αναρτηθούν τα πρώτα νέα του Εργαστηρίου.</p>`;
@@ -330,6 +398,7 @@ const PAGES = {
     $("#a-photo").style.cssText = bg(a.director_photo);
     $("#a-wtitle").textContent = a.welcome_title;
     $("#a-quote").innerHTML = inline(a.welcome_quote);
+    $("#a-photo").setAttribute("aria-label", a.director_name || "");
     $("#a-text").innerHTML = paras(a.welcome_text);
     $("#a-sign").innerHTML = `<b>${esc(a.director_name)}</b>${esc(a.director_role)}`;
     $("#a-gtitle").textContent = a.glance_title;
@@ -351,15 +420,18 @@ const PAGES = {
   },
 
   async research() {
-    const [axes, projects, charts] = await Promise.all([load("axes"), load("projects"), load("charts")]);
+    const [axes, projects, charts, thoughts] = await Promise.all([load("axes"), load("projects"), load("charts"), load("thoughts")]);
+    const ts = list(thoughts).filter(t => t.title).sort((a, b) => (parseDate(b.date) || 0) - (parseDate(a.date) || 0));
+    if (ts.length) $("#thoughts").innerHTML = ts.map(t => thoughtCard(t, false)).join("");
+    else $("#thoughts-block").hidden = true;
     $("#axis-cards").innerHTML = list(axes).map(a => `
       <a class="axis-card" href="axis.html?id=${encodeURIComponent(a.id)}" style="--c:${esc(a.color)}">
         <div class="photo" style="${bg(list(a.images)[0])}"></div>
         <div class="txt"><h3>${esc(a.title)}</h3><p>${esc(a.summary)}</p></div></a>`).join("");
     const pr = list(projects).filter(p => p.title);
     $("#projects").innerHTML = pr.length ? `<div class="projects">${pr.map(p => `
-      <article class="project"><h3>${esc(p.title)}</h3>${p.status ? `<span class="status">${esc(p.status)}</span>` : ""}
-      ${paras(p.description)}${safeUrl(p.link) ? `<a class="btn-link" href="${esc(safeUrl(p.link))}" target="_blank" rel="noopener">${esc(p.link_label || "Ιστοσελίδα του έργου")}</a>` : ""}</article>`).join("")}</div>`
+      <article class="project"><h3>${esc(p.title)}</h3>${p.status ? `<span class="status">${/εξέλιξη/i.test(p.status) ? '<span class="live"></span>' : ""}${esc(p.status)}</span>` : ""}
+      ${paras(p.description)}${p.sponsor ? `<p class="muted" style="font-size:.9rem;margin-top:-4px">${esc(p.sponsor)}</p>` : ""}${safeUrl(p.link) ? `<a class="btn-link" href="${esc(safeUrl(p.link))}" target="_blank" rel="noopener">${esc(p.link_label || "Ιστοσελίδα του έργου")}</a>` : ""}</article>`).join("")}</div>`
       : `<p class="empty">Τα τρέχοντα ερευνητικά έργα θα παρουσιαστούν σύντομα.</p>`;
     const ch = list(charts).filter(c => c.title && c.visible !== false);
     if (!ch.length) { $("#charts-block").hidden = true; return; }

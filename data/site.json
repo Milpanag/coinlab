@@ -20,5 +20,9 @@
   "hero_images": [
     "images/hero2.jpg",
     "images/hero1.jpg"
-  ]
+  ],
+  "announcement_on": true,
+  "announcement_text": "Ψηφιακό αρχείο «Έλληνες Επιχειρηματίες 1816–2023»",
+  "announcement_note": "powered by Ναυτεμπορική",
+  "announcement_link": "https://ekpa.minoancloud.gr/"
 }
