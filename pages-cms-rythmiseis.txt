@@ -1,0 +1,202 @@
+# Ρυθμίσεις για το Pages CMS (https://app.pagescms.org)
+# Ορίζει τι μπορείτε να επεξεργάζεστε από το περιβάλλον διαχείρισης.
+# Στα κείμενα: αφήστε μια κενή γραμμή για νέα παράγραφο. Για έντονα γράμματα: **λέξη**
+media:
+  input: uploads
+  output: uploads
+
+content:
+  - name: news
+    label: Νέα
+    type: file
+    path: data/news.json
+    format: json
+    list: true
+    fields:
+      - { name: title, label: Τίτλος, type: string, required: true }
+      - { name: date, label: Ημερομηνία, type: date, required: true }
+      - { name: image, label: Φωτογραφία, type: image }
+      - { name: video, label: "Βίντεο (σύνδεσμος YouTube/Vimeo ή αρχείο mp4)", type: string }
+      - { name: summary, label: Σύντομη περίληψη, type: text }
+      - { name: body, label: Πλήρες κείμενο, type: text }
+      - { name: link, label: Σύνδεσμος (προαιρετικό), type: string }
+
+  - name: events
+    label: Ημερολόγιο δραστηριοτήτων
+    type: file
+    path: data/events.json
+    format: json
+    list: true
+    fields:
+      - { name: title, label: Τίτλος, type: string, required: true }
+      - { name: date, label: Ημερομηνία, type: date, required: true }
+      - { name: time, label: "Ώρα (π.χ. 18:00)", type: string }
+      - { name: location, label: Τόπος, type: string }
+      - { name: description, label: Περιγραφή, type: text }
+      - { name: link, label: Σύνδεσμος (προαιρετικό), type: string }
+
+  - name: charts
+    label: Γραφήματα
+    type: file
+    path: data/charts.json
+    format: json
+    list: true
+    fields:
+      - { name: featured, label: "Γράφημα του μήνα (εμφανίζεται στην αρχική)", type: boolean }
+      - { name: month, label: "Μήνας (π.χ. Νοέμβριος 2026)", type: string }
+      - { name: title, label: Τίτλος γραφήματος, type: string, required: true }
+      - { name: headline, label: Τίτλος ανάλυσης, type: string }
+      - { name: description, label: Ανάλυση / σχόλιο, type: text }
+      - name: type
+        label: "Είδος (barh = οριζόντιες στήλες, bar = κάθετες στήλες, line = γραμμή, pie/doughnut = πίτα)"
+        type: select
+        options:
+          values: [barh, bar, line, pie, doughnut]
+      - { name: unit, label: "Μονάδα μέτρησης (π.χ. εκατ. δολάρια ΗΠΑ)", type: string }
+      - { name: labels, label: "Ετικέτες, χωρισμένες με κόμμα", type: text }
+      - name: series
+        label: Σειρές δεδομένων
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Όνομα σειράς, type: string }
+          - { name: values, label: "Τιμές με κόμμα (χωρίς τελείες χιλιάδων)", type: text }
+      - { name: source, label: Πηγή, type: text }
+      - { name: source_link, label: Σύνδεσμος πηγής, type: string }
+      - { name: visible, label: Εμφάνιση στο site, type: boolean }
+
+  - name: team
+    label: Ομάδα
+    type: file
+    path: data/team.json
+    format: json
+    list: true
+    fields:
+      - { name: name, label: Ονοματεπώνυμο, type: string, required: true }
+      - { name: role, label: Ιδιότητα, type: string }
+      - name: category
+        label: Κατηγορία
+        type: select
+        required: true
+        options:
+          values: [Διδακτικό Προσωπικό, Συνεργαζόμενα Μέλη, Διδάκτορες, Υποψήφιοι Διδάκτορες]
+      - { name: topic, label: Θέμα διατριβής (για υποψήφιους διδάκτορες), type: text }
+      - { name: email, label: Email, type: string }
+      - { name: phone, label: Τηλέφωνο, type: string }
+      - { name: photo, label: Φωτογραφία (τετράγωνη), type: image }
+      - { name: cv, label: Βιογραφικό (PDF), type: file }
+
+  - name: publications
+    label: Δημοσιεύσεις
+    type: file
+    path: data/publications.json
+    format: json
+    list: true
+    fields:
+      - name: category
+        label: Κατηγορία
+        type: select
+        required: true
+        options:
+          values: [Επιστημονικά Περιοδικά, Επιστημονικά Συνέδρια, Κεφάλαια σε Συλλογικούς Τόμους, Βιβλία, Άλλες]
+      - { name: year, label: Έτος, type: number, required: true }
+      - { name: authors, label: Συγγραφείς, type: string, required: true }
+      - { name: title, label: Τίτλος, type: text, required: true }
+      - { name: venue, label: "Περιοδικό / Συνέδριο / Τόμος / Εκδότης", type: string }
+      - { name: link, label: "Σύνδεσμος (DOI ή URL)", type: string }
+
+  - name: projects
+    label: Τρέχοντα έργα
+    type: file
+    path: data/projects.json
+    format: json
+    list: true
+    fields:
+      - { name: title, label: Τίτλος έργου, type: string, required: true }
+      - { name: status, label: "Κατάσταση (π.χ. Σε εξέλιξη, Ολοκληρώθηκε)", type: string }
+      - { name: description, label: Περιγραφή, type: text }
+      - { name: link, label: Σύνδεσμος, type: string }
+      - { name: link_label, label: "Κείμενο κουμπιού (π.χ. Συμμετέχετε στην έρευνα)", type: string }
+
+  - name: home
+    label: "Κείμενα: Αρχική"
+    type: file
+    path: data/home.json
+    format: json
+    fields:
+      - { name: tagline, label: Φράση κάτω από τον τίτλο, type: text }
+      - { name: pull, label: Εναρκτήρια φράση «Το Εργαστήριο», type: text }
+      - { name: intro, label: Κείμενο, type: text }
+      - { name: focus_title, label: Τίτλος ετικετών, type: string }
+      - { name: focus, label: Πεδία έμφασης (ετικέτες), type: string, list: true }
+      - { name: outro, label: Συνέχεια κειμένου, type: text }
+      - { name: goal_title, label: Τίτλος πλαισίου, type: string }
+      - { name: goal_text, label: Κείμενο πλαισίου, type: text }
+      - { name: goal_items_title, label: Εισαγωγή λίστας στόχων, type: string }
+      - { name: goal_items, label: Επιμέρους στόχοι, type: text, list: true }
+
+  - name: about
+    label: "Κείμενα: Σχετικά"
+    type: file
+    path: data/about.json
+    format: json
+    fields:
+      - { name: welcome_title, label: Τίτλος χαιρετισμού, type: string }
+      - { name: welcome_quote, label: Φράση σε εισαγωγικά, type: text }
+      - { name: welcome_text, label: Κείμενο χαιρετισμού, type: text }
+      - { name: director_name, label: Όνομα Διευθύντριας, type: string }
+      - { name: director_role, label: Ιδιότητα, type: string }
+      - { name: director_photo, label: Φωτογραφία Διευθύντριας, type: image }
+      - { name: glance_title, label: Τίτλος «με μια ματιά», type: string }
+      - { name: glance_text, label: Κείμενο «με μια ματιά», type: text }
+      - { name: fields, label: Γνωστικά αντικείμενα (ετικέτες), type: string, list: true }
+      - name: facts
+        label: Βασικά στοιχεία
+        type: object
+        list: true
+        fields:
+          - { name: label, label: Ετικέτα, type: string }
+          - { name: value, label: Τιμή, type: string }
+      - { name: glance_images, label: Φωτογραφίες, type: image, list: true }
+
+  - name: axes
+    label: "Κείμενα: Ερευνητικοί άξονες"
+    type: file
+    path: data/axes.json
+    format: json
+    list: true
+    fields:
+      - { name: id, label: "Κωδικός σελίδας (λατινικά, χωρίς κενά – μην τον αλλάζετε)", type: string, required: true }
+      - { name: title, label: Τίτλος, type: string, required: true }
+      - { name: color, label: "Χρώμα (κωδικός, π.χ. #8C3B5E)", type: string }
+      - { name: summary, label: Σύντομη περίληψη, type: text }
+      - { name: theory_label, label: "Τίτλος ετικετών (π.χ. Θεωρητικό πλαίσιο)", type: string }
+      - { name: thinkers, label: Ετικέτες (θεωρητικοί ή θέματα), type: string, list: true }
+      - { name: intro, label: Κύριο κείμενο, type: text }
+      - { name: more, label: Υπόλοιπο κείμενο («Διαβάστε ολόκληρη την περιγραφή»), type: text }
+      - { name: list_title, label: "Τίτλος λίστας (π.χ. Ερευνητικά ερωτήματα)", type: string }
+      - { name: list_items, label: Στοιχεία λίστας, type: text, list: true }
+      - { name: callout_title, label: Τίτλος πλαισίου (προαιρετικό), type: string }
+      - { name: callout_text, label: Κείμενο πλαισίου, type: text }
+      - { name: images, label: "Φωτογραφίες (η πρώτη μπαίνει στην κορυφή)", type: image, list: true }
+
+  - name: site
+    label: Γενικά & επικοινωνία
+    type: file
+    path: data/site.json
+    format: json
+    fields:
+      - { name: title, label: Τίτλος Εργαστηρίου, type: string }
+      - { name: title_en, label: Αγγλική ονομασία, type: string }
+      - { name: department, label: Τμήμα, type: string }
+      - { name: department_url, label: Ιστοσελίδα Τμήματος, type: string }
+      - { name: university, label: Πανεπιστήμιο, type: string }
+      - { name: hero_images, label: Φωτογραφίες αρχικής (εναλλάσσονται), type: image, list: true }
+      - { name: address, label: Διεύθυνση, type: text }
+      - { name: office, label: Γραφείο / όροφος, type: string }
+      - { name: email, label: Email Εργαστηρίου, type: string }
+      - { name: phone, label: Τηλέφωνο, type: string }
+      - { name: hours, label: Ώρες επικοινωνίας, type: string }
+      - { name: linkedin, label: LinkedIn, type: string }
+      - { name: form_topics, label: Θέματα φόρμας επικοινωνίας, type: string, list: true }
+      - { name: formspree, label: Κωδικός φόρμας Formspree, type: string }

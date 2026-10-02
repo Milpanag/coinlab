@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Επικοινωνία | Εργαστήριο Κατανάλωσης, Επιχειρηματικότητας και Καινοτομίας</title>
+<meta name="description" content="Εργαστήριο Κατανάλωσης, Επιχειρηματικότητας και Καινοτομίας, Τμήμα Κοινωνιολογίας ΕΚΠΑ.">
+<meta property="og:title" content="Επικοινωνία | Εργαστήριο Κατανάλωσης, Επιχειρηματικότητας και Καινοτομίας">
+<meta property="og:image" content="images/hero2.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧾</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Commissioner:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="contact" data-section="contact.html">
+<div id="site-header"></div>
+<main>
+<section class="page-head"><div class="wrap"><h1>Επικοινωνία</h1><p>Για συνεργασίες, ερευνητικά προγράμματα ή συμμετοχή φοιτητών στο Εργαστήριο.</p></div></section>
+<section class="block">
+  <div class="wrap contact-grid">
+    <div class="info">
+      <h2>Στοιχεία</h2>
+      <dl>
+        <dt>Διεύθυνση</dt><dd id="c-address"></dd>
+        <dt>Email</dt><dd id="c-email"></dd>
+        <dt>Τηλέφωνο</dt><dd id="c-phone"></dd>
+      </dl>
+      <dl id="c-extra" style="margin-top:12px"></dl>
+    </div>
+    <div>
+      <h2>Στείλτε μας μήνυμα</h2>
+      <form id="contact-form" novalidate>
+        <div class="row"><label for="f-name">Ονοματεπώνυμο</label><input id="f-name" name="name" required autocomplete="name"></div>
+        <div class="row"><label for="f-email">Email</label><input id="f-email" name="email" type="email" required autocomplete="email"></div>
+        <div class="row"><label for="f-topic">Θέμα</label><select id="f-topic" name="topic"><option>Άλλο</option></select></div>
+        <div class="row"><label for="f-msg">Μήνυμα</label><textarea id="f-msg" name="message" required></textarea></div>
+        <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn" type="submit">Αποστολή μηνύματος</button>
+        <div class="form-msg" id="form-msg" role="status"></div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+<div id="site-footer"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>

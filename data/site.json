@@ -1,0 +1,24 @@
+{
+  "title": "Εργαστήριο Κατανάλωσης, Επιχειρηματικότητας και Καινοτομίας",
+  "title_en": "Centre for Consumption, Entrepreneurship and Innovation",
+  "department": "Τμήμα Κοινωνιολογίας",
+  "department_url": "https://www.soc.uoa.gr/",
+  "university": "Εθνικό και Καποδιστριακό Πανεπιστήμιο Αθηνών",
+  "address": "Αγίου Κωνσταντίνου 14, Τ.Κ. 104 31, Αθήνα",
+  "office": "",
+  "email": "",
+  "phone": "",
+  "hours": "",
+  "linkedin": "",
+  "formspree": "",
+  "form_topics": [
+    "Πρόταση συνεργασίας",
+    "Συμμετοχή φοιτητή/τριας",
+    "Ερώτηση για την έρευνά μας",
+    "Άλλο"
+  ],
+  "hero_images": [
+    "images/hero2.jpg",
+    "images/hero1.jpg"
+  ]
+}

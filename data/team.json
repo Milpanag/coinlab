@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Βάλια Αρανίτου",
+    "role": "Καθηγήτρια, Διευθύντρια του Εργαστηρίου",
+    "category": "Διδακτικό Προσωπικό",
+    "topic": "",
+    "email": "aranitouv@soc.uoa.gr",
+    "phone": "",
+    "photo": "images/team/aranitou.jpg",
+    "cv": ""
+  },
+  {
+    "name": "Κώστας Ελευθερίου",
+    "role": "Επίκουρος Καθηγητής",
+    "category": "Διδακτικό Προσωπικό",
+    "topic": "",
+    "email": "costasele@soc.uoa.gr",
+    "phone": "",
+    "photo": "images/team/eleftheriou.jpg",
+    "cv": ""
+  },
+  {
+    "name": "Χάρης Μαλαμίδης",
+    "role": "Επίκουρος Καθηγητής",
+    "category": "Διδακτικό Προσωπικό",
+    "topic": "",
+    "email": "malamidish@soc.uoa.gr",
+    "phone": "",
+    "photo": "images/team/malamidis.jpg",
+    "cv": ""
+  },
+  {
+    "name": "Μιλένα Παναγιωτοπούλου",
+    "role": "Ακαδημαϊκή Υπότροφος ΕΣΠΑ",
+    "category": "Συνεργαζόμενα Μέλη",
+    "topic": "",
+    "email": "milpanag@soc.uoa.gr",
+    "phone": "",
+    "photo": "images/team/panagiotopoulou.jpg",
+    "cv": ""
+  },
+  {
+    "name": "Κωνσταντίνος-Σπυρίδων Δημόπουλος",
+    "role": "Υποψήφιος Διδάκτορας",
+    "category": "Υποψήφιοι Διδάκτορες",
+    "topic": "Η συγκρότηση της ελληνικής αστικής τάξης μετά τον Β΄ Παγκόσμιο Πόλεμο",
+    "email": "",
+    "phone": "",
+    "photo": "",
+    "cv": ""
+  },
+  {
+    "name": "Ιωάννης Κεμαχλής",
+    "role": "Υποψήφιος Διδάκτορας",
+    "category": "Υποψήφιοι Διδάκτορες",
+    "topic": "Επιχειρηματικότητα και καταναλωτικές ασυνέχειες: Μετασχηματισμοί στον κλάδο των τροφίμων",
+    "email": "",
+    "phone": "",
+    "photo": "images/team/kemachlis.jpg",
+    "cv": ""
+  },
+  {
+    "name": "Αθανάσιος Μπινιχάκης",
+    "role": "Υποψήφιος Διδάκτορας",
+    "category": "Υποψήφιοι Διδάκτορες",
+    "topic": "Consumption and Social Media: An Investigation of the effect of fashion brands on the accumulation of symbolic capital",
+    "email": "",
+    "phone": "",
+    "photo": "",
+    "cv": ""
+  },
+  {
+    "name": "Μάκης Σαββίδης",
+    "role": "Υποψήφιος Διδάκτορας",
+    "category": "Υποψήφιοι Διδάκτορες",
+    "topic": "Ασυμμετρίες Εμπιστοσύνης και Καταναλωτικής Συμπεριφοράς στο Διασυνοριακό Ηλεκτρονικό Εμπόριο: Μια Οικονομικο-Κοινωνιολογική Προσέγγιση μεταξύ οικονομιών διαφορετικής οικονομικής, θεσμικής και συμβολικής ισχύος",
+    "email": "",
+    "phone": "",
+    "photo": "",
+    "cv": ""
+  }
+]
