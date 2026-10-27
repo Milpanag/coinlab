@@ -478,3 +478,5 @@ dialog.lightbox button{position:fixed;top:16px;right:20px;font:inherit;font-size
   .thought-author{text-align:left;margin:0}
   .companion{grid-template-columns:1fr}
 }
+   .person-photo[style*="background-image"]{filter:grayscale(1) contrast(1.05);transition:filter .4s}
+   .person:hover .person-photo{filter:none}
