@@ -177,6 +177,14 @@ function uoaFeed(feed, n) {
     <p class="feed-src">Αυτόματη ενημέρωση από τον <a href="https://hub.uoa.gr/" target="_blank" rel="noopener">Κόμβο Επικοινωνίας του ΕΚΠΑ</a>.</p>`;
 }
 
+function socFeed(feed, n) {
+  const items = (feed && feed.soc || []).slice(0, n);
+  if (!items.length) return "";
+  return `<ul class="soc-feed">${items.map(i => `<li><a href="${esc(safeUrl(i.link))}" target="_blank" rel="noopener">
+      <time>${icon("cal")} ${fmtDate(i.date)}</time><span>${esc(i.title)}</span>${icon("ext")}</a></li>`).join("")}</ul>
+    <p class="feed-src">Αυτόματη ενημέρωση από τις <a href="https://www.soc.uoa.gr/" target="_blank" rel="noopener">ανακοινώσεις του Τμήματος Κοινωνιολογίας</a>.</p>`;
+}
+
 /* ---------- Εκδηλώσεις & ημερολόγιο ---------- */
 function eventItem(e) {
   const when = fmtDate(e.date) + (e.time ? `, ${esc(e.time)}` : "");
@@ -507,6 +515,8 @@ const PAGES = {
     const n = sortNews(news);
     $("#news-root").innerHTML = n.length ? `<div class="news-grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">${n.map(x => newsCard(x, true)).join("")}</div>` : `<p class="empty">Σύντομα θα αναρτηθούν τα πρώτα νέα του Εργαστηρίου.</p>`;
     calendar($("#calendar"), events || []);
+    const sf = socFeed(feed, 8);
+    if (sf) $("#news-soc").innerHTML = sf; else $("#soc-block").hidden = true;
     const f = uoaFeed(feed, 8);
     if (f) $("#news-uoa").innerHTML = f; else $("#uoa-block").hidden = true;
   },

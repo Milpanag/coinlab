@@ -1,11 +1,22 @@
-"""Φέρνει τα πιο πρόσφατα νέα από τον Κόμβο Επικοινωνίας του ΕΚΠΑ (hub.uoa.gr)
-και τα αποθηκεύει στο data/uoa-news.json. Τρέχει αυτόματα κάθε μέρα από το GitHub."""
+"""Φέρνει αυτόματα τα πιο πρόσφατα νέα:
+  - από τον Κόμβο Επικοινωνίας του ΕΚΠΑ (hub.uoa.gr)       -> "items"
+  - από τις ανακοινώσεις του Τμήματος Κοινωνιολογίας        -> "soc"
+και τα αποθηκεύει στο data/uoa-news.json. Τρέχει κάθε μέρα από το GitHub.
+Αν μια πηγή δεν απαντήσει, κρατά τα προηγούμενα νέα της."""
 import json, re, sys, html, urllib.request
 import xml.etree.ElementTree as ET
 from email.utils import parsedate_to_datetime
 from datetime import datetime, timezone
 
-FEED = "https://hub.uoa.gr/feed/"
+FEEDS = {
+    "items": ["https://hub.uoa.gr/feed/"],
+    "soc": [
+        "https://www.soc.uoa.gr/anakoinoseis_kai_ekdiloseis/?type=9821",
+        "https://www.soc.uoa.gr/anakoinoseis/?type=9821",
+        "https://www.soc.uoa.gr/?type=9821",
+        "https://www.soc.uoa.gr/?type=9818",
+    ],
+}
 OUT = "data/uoa-news.json"
 MAX_ITEMS = 8
 NS = {"content": "http://purl.org/rss/1.0/modules/content/", "media": "http://search.yahoo.com/mrss/"}
@@ -19,14 +30,9 @@ def clean(s, n=220):
     t = re.sub(r"\s+", " ", t).strip()
     return (t[:n].rsplit(" ", 1)[0] + "…") if len(t) > n else t
 
-def main():
-    try:
-        req = urllib.request.Request(FEED, headers={"User-Agent": "Mozilla/5.0 (CEI Lab website)"})
-        raw = urllib.request.urlopen(req, timeout=30).read()
-        root = ET.fromstring(raw)
-    except Exception as e:
-        print("Δεν ήταν δυνατή η λήψη του feed:", e)
-        return 0  # κρατάμε τα προηγούμενα νέα
+def fetch(url):
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (CoIn Lab website)"})
+    root = ET.fromstring(urllib.request.urlopen(req, timeout=30).read())
     items = []
     for it in root.iter("item"):
         title = html.unescape((it.findtext("title") or "").strip())
@@ -49,16 +55,35 @@ def main():
         if not img and enc is not None and "image" in (enc.get("type") or ""):
             img = enc.get("url", "")
         img = img or first_img(content) or first_img(desc)
-        items.append({"title": title, "link": link, "date": date, "image": img if img.startswith("http") else "",
-                      "summary": clean(desc or content)})
+        items.append({"title": title, "link": link, "date": date,
+                      "image": img if img.startswith("http") else "", "summary": clean(desc or content)})
         if len(items) >= MAX_ITEMS:
             break
-    if not items:
-        print("Το feed δεν είχε άρθρα.")
-        return 0
-    with open(OUT, "w", encoding="utf-8") as f:
-        json.dump({"updated": datetime.now(timezone.utc).isoformat(timespec="minutes"), "items": items}, f, ensure_ascii=False, indent=2)
-    print(f"Αποθηκεύτηκαν {len(items)} νέα.")
+    return items
+
+def main():
+    try:
+        data = json.load(open(OUT, encoding="utf-8"))
+    except Exception:
+        data = {}
+    changed = False
+    for key, urls in FEEDS.items():
+        for url in urls:
+            try:
+                items = fetch(url)
+            except Exception as e:
+                print(f"[{key}] Δεν ήταν δυνατή η λήψη από {url}: {e}")
+                continue
+            if items:
+                data[key] = items
+                changed = True
+                print(f"[{key}] Αποθηκεύτηκαν {len(items)} νέα από {url}")
+                break
+            print(f"[{key}] Χωρίς άρθρα στο {url}")
+    if changed:
+        data["updated"] = datetime.now(timezone.utc).isoformat(timespec="minutes")
+        with open(OUT, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
     return 0
 
 if __name__ == "__main__":

@@ -480,3 +480,13 @@ dialog.lightbox button{position:fixed;top:16px;right:20px;font:inherit;font-size
 }
    .person-photo[style*="background-image"]{filter:grayscale(1) contrast(1.05);transition:filter .4s}
    .person:hover .person-photo{filter:none}
+
+/* Ανακοινώσεις Τμήματος Κοινωνιολογίας */
+.soc-feed{list-style:none;padding:0;margin:0;border-top:1px solid var(--rule)}
+.soc-feed li{border-bottom:1px solid var(--rule)}
+.soc-feed a{display:grid;grid-template-columns:200px 1fr auto;gap:20px;align-items:baseline;padding:16px 4px;text-decoration:none}
+.soc-feed a:hover span{text-decoration:underline;text-underline-offset:3px}
+.soc-feed time{display:flex;align-items:center;gap:6px;font-size:.88rem;color:var(--uoa);font-weight:600}
+.soc-feed span{font-family:var(--serif);font-size:1.05rem}
+.soc-feed .ico:last-child{color:var(--ink-soft)}
+@media (max-width:640px){.soc-feed a{grid-template-columns:1fr auto;gap:4px 12px}.soc-feed time{grid-column:1/-1}}
