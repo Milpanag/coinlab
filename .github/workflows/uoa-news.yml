@@ -1,4 +1,4 @@
-# Ενημερώνει καθημερινά την ενότητα «Από το ΕΚΠΑ» με τα νέα του hub.uoa.gr
+# Ενημερώνει καθημερινά τα νέα του ΕΚΠΑ και του Τμήματος Κοινωνιολογίας
 name: Νέα ΕΚΠΑ
 on:
   schedule:
@@ -6,6 +6,9 @@ on:
   workflow_dispatch:       # επιτρέπει χειροκίνητη εκτέλεση από την καρτέλα Actions
 permissions:
   contents: write
+concurrency:
+  group: uoa-news
+  cancel-in-progress: false
 jobs:
   fetch:
     runs-on: ubuntu-latest
@@ -20,5 +23,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/uoa-news.json
-          git diff --cached --quiet || git commit -m "Ενημέρωση νέων ΕΚΠΑ"
-          git push
+          if git diff --cached --quiet; then echo "Καμία αλλαγή"; exit 0; fi
+          git commit -m "Ενημέρωση νέων ΕΚΠΑ"
+          for i in 1 2 3; do
+            git pull --rebase && git push && exit 0
+            sleep 10
+          done
+          exit 1
