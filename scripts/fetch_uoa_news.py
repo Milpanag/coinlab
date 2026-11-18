@@ -11,10 +11,9 @@ from datetime import datetime, timezone
 FEEDS = {
     "items": ["https://hub.uoa.gr/feed/"],
     "soc": [
-        "https://www.soc.uoa.gr/anakoinoseis_kai_ekdiloseis/?type=9821",
-        "https://www.soc.uoa.gr/anakoinoseis/?type=9821",
-        "https://www.soc.uoa.gr/?type=9821",
-        "https://www.soc.uoa.gr/?type=9818",
+        "https://www.soc.uoa.gr/feed/",
+        "https://www.soc.uoa.gr/nea/all/feed/",
+        "html:https://www.soc.uoa.gr/nea/all/",
     ],
 }
 OUT = "data/uoa-news.json"
@@ -30,7 +29,26 @@ def clean(s, n=220):
     t = re.sub(r"\s+", " ", t).strip()
     return (t[:n].rsplit(" ", 1)[0] + "…") if len(t) > n else t
 
+def fetch_html(url):
+    """Εναλλακτικά: διαβάζει απευθείας τη σελίδα ανακοινώσεων (WordPress)."""
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (CoIn Lab website)"})
+    page = urllib.request.urlopen(req, timeout=30).read().decode("utf-8", "replace")
+    items, seen = [], set()
+    pat = r'<h[2-4][^>]*>\s*<a[^>]+href="(https?://(?:www\.)?soc\.uoa\.gr/(\d{4})/(\d{2})/(\d{2})/[^"]+)"[^>]*>(.*?)</a>'
+    for m in re.finditer(pat, page, re.S | re.I):
+        link = m.group(1)
+        if link in seen:
+            continue
+        seen.add(link)
+        items.append({"title": clean(m.group(5), 300), "link": link,
+                      "date": f"{m.group(2)}-{m.group(3)}-{m.group(4)}", "image": "", "summary": ""})
+        if len(items) >= MAX_ITEMS:
+            break
+    return items
+
 def fetch(url):
+    if url.startswith("html:"):
+        return fetch_html(url[5:])
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (CoIn Lab website)"})
     root = ET.fromstring(urllib.request.urlopen(req, timeout=30).read())
     items = []
